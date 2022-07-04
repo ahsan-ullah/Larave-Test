@@ -19,11 +19,15 @@ Route::group(['middleware' => ['api','throttle:60,1']], function ($router) {
     Route::post('login',  [AuthController::class ,'login']);
     Route::post('logout', [AuthController::class ,'logout']);
     Route::post('refresh',[AuthController::class ,'refresh']);
-    Route::post('register', [AuthController::class ,'store']);
-
+    Route::post('register', [AuthController::class ,'register']);
+    //Posts
+    Route::get('posts', [PostController::class, 'index']);
+    Route::post('posts', [PostController::class, 'store']);
+    Route::get('post/{id}', [PostController::class, 'show']);
+    Route::get('posts', [PostController::class, 'index']);
 });
 
-Route::resource('posts', PostController::class);
+// Route::resource('posts', PostController::class);
 
 // // Default
 // Route::controller(AuthController::class)->group(function () {

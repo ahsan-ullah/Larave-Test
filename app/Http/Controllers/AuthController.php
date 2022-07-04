@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -16,10 +17,17 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
+
+        if ($validator->fails()) {
+            $data['status'] = false;
+            $data['error'] = $validator->errors()->first();
+            return response()->json($data, 422);
+        }
+        
         $credentials = $request->only('email', 'password');
 
         $token = Auth::attempt($credentials);
@@ -43,11 +51,17 @@ class AuthController extends Controller
     }
 
     public function register(Request $request){
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|min:2|max:100',
+            'email' => 'required|email',
             'password' => 'required|string|min:6',
         ]);
+
+        if ($validator->fails()) {
+            $data['status'] = false;
+            $data['error'] = $validator->errors()->first();
+            return response()->json($data, 422);
+        }
 
         $user = User::create([
             'name' => $request->name,
