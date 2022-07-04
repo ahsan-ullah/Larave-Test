@@ -159,12 +159,12 @@ class PostController extends Controller
     public function likeOnPost(Request $request)
     {
         $user = Auth::user();
-        $post = Post::findOrFail($request->id);
+        $post = Post::findOrFail($request->post_id);
         if (!empty($post)) {
             try {
                 $like = new PostLike;
                 $data = [
-                    'post_id' => $request->post_id,
+                    'post_id' => $post->id,
                     'user_id' => $user->id
                 ];
                 $like::create($data);
@@ -181,7 +181,7 @@ class PostController extends Controller
     }
 
     /**
-     * Set Like the specified post.
+     * Set UnLike the specified post.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -200,7 +200,7 @@ class PostController extends Controller
                 ];
                 $like::create($data);
                 $data['status'] = true;
-                $data['message'] = "Your Like has been successfully placed";
+                $data['message'] = "Your Un-Like has been successfully placed";
                 return response()->json($data, 200);
             } catch (\Throwable $th) {
                 $data['status'] = false;
