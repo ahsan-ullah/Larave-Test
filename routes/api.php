@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +22,8 @@ Route::group(['middleware' => ['api','throttle:60,1']], function ($router) {
     Route::post('register', [AuthController::class ,'store']);
 
 });
+
+Route::resource('posts', PostController::class);
 
 // // Default
 // Route::controller(AuthController::class)->group(function () {
