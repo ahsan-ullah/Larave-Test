@@ -23,11 +23,17 @@ class PostController extends Controller
      */
     public function index()
     {        
-        $posts = Post::with(['likes' => function($query) {
-            $query->take(5);
-        }])        
+        $posts = Post::with(['user' => function($qu){
+            $qu->select('id', 'name as author_name', 'email as author_email');
+            $qu->first();
+        }])
         ->withCount(['likes', 'unlikes'])
-        ->orderBy('created_at', 'asc')
+        ->with(['likes.user' => function($query) {
+            $query->select('id', 'name as liked_by');
+            $query->take(5);
+        }])     
+        
+        ->orderBy('created_at', 'desc')
         ->paginate(50);
         return response()->json($posts);
     }
@@ -77,10 +83,29 @@ class PostController extends Controller
     public function show($id)
     {
         $post = Post::where('id', $id)
+        ->with('user')
         ->with(['likes', 'unlikes'])        
         ->withCount(['likes', 'unlikes'])
         ->orderBy('created_at', 'asc')
         ->first();
+        return response()->json($post);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function get_likes($post_id)
+    {
+        $post = PostLike::where('post_id', $post_id)        
+        ->with(['user' => function($query){
+            $query->select('id', 'name as liked_by');
+        }])       
+        // ->withCount(['likes', 'unlikes'])
+        ->orderBy('created_at', 'desc')
+        ->get();
         return response()->json($post);
     }
 
@@ -190,7 +215,7 @@ class PostController extends Controller
     public function unLikeOnPost(Request $request)
     {
         $user = Auth::user();
-        $post = Post::findOrFail($request->id);
+        $post = Post::findOrFail($request->post_id);
         if (!empty($post)) {
             try {
                 $like = new PostUnlike;
