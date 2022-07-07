@@ -7,6 +7,7 @@ use App\Models\PostLike;
 use App\Models\PostUnlike;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
@@ -48,7 +49,8 @@ class PostController extends Controller
     {
         $user = Auth::user();
         $validator = Validator::make($request->all(), [
-            'title' => 'required|min:2|max:255'
+            'title' => 'required|min:2|max:255',
+            'image'=> ['required','max:200'] 
         ]);
 
         if ($validator->fails()) {
@@ -58,11 +60,28 @@ class PostController extends Controller
         }
 
         try {
+            $postImage = NULL;
+            // Handle file Upload
+            if($request->hasFile('image')){
+
+                // Get filename with the extension
+                $filenameWithExt = $request->file('image')->getClientOriginalName();
+                //Get just filename
+                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                // Get just ext
+                $extension = $request->file('image')->getClientOriginalExtension();
+                // Filename to store
+                $fileNameToStore = $filename.'_'.time().'.'.$extension;
+                // Upload Image
+                $path = $request->file('image')->storeAs('public/post/',$fileNameToStore);
+
+                $postImage = $fileNameToStore ;
+            }
             $post = new Post;
             $post->title = $request->title;
             $post->user_id = $user->id;
             $post->description = $request->description;
-            $post->image = $request->image;
+            $post->image = $postImage;
             $post->total_like = 0;
             $post->total_unlike = 0;
             $post->created_at = date("Y-m-d H:i:s");
@@ -129,11 +148,28 @@ class PostController extends Controller
         }
         $user = Auth::user();
         try {
+            $postImage = NULL;
+            // Handle file Upload
+            if($request->hasFile('image')){
+
+                // Get filename with the extension
+                $filenameWithExt = $request->file('image')->getClientOriginalName();
+                //Get just filename
+                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                // Get just ext
+                $extension = $request->file('image')->getClientOriginalExtension();
+                // Filename to store
+                $fileNameToStore = $filename.'_'.time().'.'.$extension;
+                // Upload Image
+                $path = $request->file('image')->storeAs('public/post/',$fileNameToStore);
+
+                $postImage = $fileNameToStore ;
+            }
             $post = Post::find($id);
             $post->title = $request->title;
             $post->user_id = $user->id;
             $post->description = $request->description;
-            $post->image = $request->image;
+            $post->image = $postImage;
             $post->total_like = 0;
             $post->total_unlike = 0;
             $post->created_at = date("Y-m-d H:i:s");
@@ -153,11 +189,17 @@ class PostController extends Controller
     public function destroy(Request $request)
     {
         $user = Auth::user();
-        $post = Post::where('user_id', $user->id)->first($request->id);
+        $post = Post::where(['user_id' => $user->id, 'id' => $request->post_id])->find($request->post_id);
+        
         if (!empty($post)) {
             try {
-                // $post = Post::findOrFail($request->id);
-                $post->delete();
+                if (file_exists('storage/post/'.$post->image)) {
+                    unlink('storage/post/'.$post->image);
+                }
+                if ($post->delete()) {
+                    PostLike::where('post_id', $post->id)->delete();
+                    PostUnlike::where('post_id', $post->id)->delete();
+                }
                 $data['status'] = true;
                 $data['message'] = "Post has been successfully deleted";
                 return response()->json($data, 200);
@@ -168,9 +210,9 @@ class PostController extends Controller
             }  
         }else{
             $data['status'] = false;
-            $data['message'] = "You are not authorized to deleted this post";
+            $data['message'] = "You are not authorized to delete this post";
             return response()->json($data, 422);
-        }           
+        }        
 
     }
 

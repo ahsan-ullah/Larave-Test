@@ -27,4 +27,5 @@ Route::group(['middleware' => ['api','throttle:60,1']], function ($router) {
     Route::get('get-like/{id}', [PostController::class, 'get_likes']);
     Route::post('like', [PostController::class, 'likeOnPost']);
     Route::post('unlike', [PostController::class, 'unLikeOnPost']);
+    Route::post('delete', [PostController::class, 'destroy']);
 });
