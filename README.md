@@ -44,6 +44,13 @@ https://github.com/ahsan-ullah/Larave-Test.git
 
 > php artisan schedule:work
 
+## Postman Collection
+Postman Collection Link:
+[Import Postmean Collection](https://www.getpostman.com/collections/c69ac03e69ca2dd85fcc)
+
+## Postman Collection Documentaiont
+Postman Collection Link:
+[Collection Documentaiont](https://documenter.getpostman.com/view/1952071/UzJPLv1A)
 ## Dependencies
 - PHP 8 or hire
 ## License
