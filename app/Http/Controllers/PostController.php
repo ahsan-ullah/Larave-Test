@@ -6,11 +6,12 @@ use App\Models\Post;
 use App\Models\User;
 use App\Models\PostLike;
 use App\Models\PostUnlike;
-use App\Notifications\NewPostNotification;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use App\Notifications\NewPostNotification;
 use Illuminate\Support\Facades\Notification;
 
 class PostController extends Controller
@@ -81,11 +82,10 @@ class PostController extends Controller
             }
             $post = new Post;
             $post->title = $request->title;
+            $post->uuid = Str::uuid();
             $post->user_id = $user->id;
             $post->description = $request->description;
             $post->image = $postImage;
-            $post->total_like = 0;
-            $post->total_unlike = 0;
             $post->created_at = date("Y-m-d H:i:s");
             $post->save();                     
         } catch (\Throwable $th) {
@@ -101,9 +101,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($uuid)
     {
-        $post = Post::where('id', $id)
+        $post = Post::where('uuid', $uuid)
         ->with('user')
         ->with(['likes', 'unlikes'])        
         ->withCount(['likes', 'unlikes'])
@@ -191,12 +191,16 @@ class PostController extends Controller
     public function destroy(Request $request)
     {
         $user = Auth::user();
-        $post = Post::where(['user_id' => $user->id, 'id' => $request->post_id])->find($request->post_id);
+        $post = Post::where(['user_id' => $user->id, 'uuid' => $request->uuid])->first();
         
         if (!empty($post)) {
             try {
                 if (file_exists('storage/post/'.$post->image)) {
-                    unlink('storage/post/'.$post->image);
+                    try {
+                        unlink('storage/post/'.$post->image);
+                    } catch (\Throwable $th) {
+                        //throw $th;
+                    }                    
                 }
                 if ($post->delete()) {
                     PostLike::where('post_id', $post->id)->delete();

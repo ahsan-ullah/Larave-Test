@@ -14,14 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::create('posts', function (Blueprint $table) {
-            // $table->uuid('id')->primary();
             $table->id();
+            $table->uuid('uuid')->nullable();
             $table->integer('user_id');
             $table->string('title');
             $table->text('description')->nullable();
             $table->string('image')->nullable();
-            $table->string('total_like')->nullable();
-            $table->string('total_unlike')->nullable();
             $table->timestamps();
         });
     }
