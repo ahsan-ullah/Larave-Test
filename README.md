@@ -28,13 +28,20 @@ https://github.com/ahsan-ullah/Larave-Test.git
 #### Run the folloing command
 > composer update
 > cp .env.example .env
+- Create a database by laravel_test
 - Update .env file database name to laravel_test
 > php artisan key:generate
+
 > php artisan jwt:secret
+
 > php artisan migrate
+
 > php artisan serve
+
 > php artisan storage:link
+
 > php artisan queue:listen
+
 > php artisan schedule:work
 
 ## Dependencies
