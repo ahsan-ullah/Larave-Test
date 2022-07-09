@@ -27,9 +27,12 @@ https://github.com/ahsan-ullah/Larave-Test.git
 
 ## Run the folloing command
 > composer update
+
 > cp .env.example .env
+
 - Create a database by laravel_test
 - Update .env file database name to laravel_test
+
 > php artisan key:generate
 
 > php artisan jwt:secret
@@ -47,10 +50,11 @@ https://github.com/ahsan-ullah/Larave-Test.git
 ## Postman Collection
 Postman Collection Link:
 [Import Postmean Collection](https://www.getpostman.com/collections/c69ac03e69ca2dd85fcc)
+https://www.getpostman.com/collections/c69ac03e69ca2dd85fcc
 
 ## Postman Collection Documentaiont
 Postman Collection Link:
-[Collection Documentaiont](https://documenter.getpostman.com/view/1952071/UzJPLv1A)
+https://documenter.getpostman.com/view/1952071/UzJPLv1A
 ## Dependencies
 - PHP 8 or hire
 ## License
