@@ -35,8 +35,7 @@ class PostController extends Controller
         ->with(['likes.user' => function($query) {
             $query->select('id', 'name as liked_by');
             $query->take(5);
-        }])     
-        
+        }])
         ->orderBy('created_at', 'desc')
         ->paginate(50);
         return response()->json($posts);
@@ -232,7 +231,7 @@ class PostController extends Controller
     public function likeOnPost(Request $request)
     {
         $user = Auth::user();
-        $post = Post::findOrFail($request->post_id);
+        $post = Post::find($request->post_id);
         if (!empty($post)) {
             try {
                 $like = new PostLike;
