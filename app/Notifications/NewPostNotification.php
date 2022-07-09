@@ -2,24 +2,15 @@
 
 namespace App\Notifications;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class NewPostNotification extends Notification implements ShouldQueue
 {
     use Queueable;
-
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
-    public function __construct($user)
-    {
-        $this->user = $user;
-    }
-
+    
     /**
      * Get the notification's delivery channels.
      *
@@ -40,8 +31,10 @@ class NewPostNotification extends Notification implements ShouldQueue
     public function toArray($notifiable)
     {
         return [
-            'name' => $this->user->name,
-            'email' => $this->user->email,
+            'title' => "A new post has been Added",
+            'user_id' => $notifiable->id,
+            'name' => $notifiable->name,
+            'email' => $notifiable->email
         ];
     }
 }

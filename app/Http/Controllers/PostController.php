@@ -3,16 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
 use App\Models\PostLike;
 use App\Models\PostUnlike;
+use App\Notifications\NewPostNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Notification;
 
 class PostController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('auth:api', ['except' => ['index','show']]);
@@ -23,7 +25,7 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {        
+    {      
         $posts = Post::with(['user' => function($qu){
             $qu->select('id', 'name as author_name', 'email as author_email');
             $qu->first();
@@ -85,11 +87,11 @@ class PostController extends Controller
             $post->total_like = 0;
             $post->total_unlike = 0;
             $post->created_at = date("Y-m-d H:i:s");
-            $post->save();            
+            $post->save();                     
         } catch (\Throwable $th) {
             return response()->json($th->getMessage());
-        }
-        
+        }        
+        $this->shootNotification(); 
         return response()->json($post);
     }
 
@@ -275,6 +277,16 @@ class PostController extends Controller
                 return response()->json($data, 422);
             }
             
+        }
+    }
+
+    public function shootNotification()
+    {
+        $notifyData = User::get();
+        try {
+            Notification::send($notifyData, new NewPostNotification);
+        } catch (\Throwable $th) {
+            // return $th->getMessage();
         }
     }
 }
