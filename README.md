@@ -15,17 +15,17 @@ including total likes and the last 5 usernames who liked the post.
     - Merge it in master branch from development branch.
 - Note: Don’t push directly in master.
 
-###### I used
+## I used
 - Laravel 9.19
 - Notification
 - Queue
 - Task Scheduling
 - JWT Authentication
-###### How to Setup and RUN
+## How to Setup and RUN
 1. Pull the repository form 
 https://github.com/ahsan-ullah/Larave-Test.git
 
-#### Run the folloing command
+## Run the folloing command
 > composer update
 > cp .env.example .env
 - Create a database by laravel_test
