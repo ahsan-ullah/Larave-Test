@@ -1,6 +1,5 @@
 
 # About Laravel-Test
-## Requirements
 Show posts in the feed with their information (Image, description, date, author) including total likes and the last 5 usernames who liked the post.
 - Feed is public (Doesn’t need authentication), paginated, and order by creationdate.
 - Users should be authenticated to create or like/unlike posts.
@@ -14,6 +13,15 @@ Show posts in the feed with their information (Image, description, date, author)
     - Push it in development branch
     - Merge it in master branch from development branch.
 - Note: Don’t push directly in master.
+## Requirements
+- Laravel 8.0 or higher.
+- JWT or Laravel Sanctum.
+- Posts identifiers should be UUID instead of Big Integer.
+- Images should be stored in the local disk.
+- Notifications should be queued.
+
+Bonus (Optional):
+- Create 5 tests (validating successful and failed scenarios)
 
 ## I used the following
 - Laravel 9.19
