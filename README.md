@@ -24,11 +24,11 @@ Show posts in the feed with their information (Image, description, date, author)
 - Create 5 tests (validating successful and failed scenarios)
 
 ## I used the following
-- Laravel 9.19
-- JWT Authentication
-- Laravel Notification
-- Laravel Queue
-- Taravel Task Scheduling
+- Laravel 9.19 (Freamwork)
+- JWT Authentication (Authentication)
+- Laravel Notification (Post Notification to all user by Database chanel)
+- Laravel Queue (Used for sending Notification)
+- Taravel Task Scheduling (Used to delete 15 days old posts)
 # How to Setup
 1. Pull the repository form 
 https://github.com/ahsan-ullah/Larave-Test.git
