@@ -20,7 +20,7 @@ Show posts in the feed with their information (Image, description, date, author)
 - Images should be stored in the local disk.
 - Notifications should be queued.
 
-Bonus (Optional):
+### Bonus (Optional):
 - Create 5 tests (validating successful and failed scenarios)
 
 ## I used the following
