@@ -1,7 +1,7 @@
 
 # About Laravel-Test
-Show posts in the feed with their information (Image, description, date, author)
-including total likes and the last 5 usernames who liked the post.
+## Requirements
+Show posts in the feed with their information (Image, description, date, author) including total likes and the last 5 usernames who liked the post.
 - Feed is public (Doesn’t need authentication), paginated, and order by creationdate.
 - Users should be authenticated to create or like/unlike posts.
 - Users can remove their posts, with the image file.
@@ -15,23 +15,24 @@ including total likes and the last 5 usernames who liked the post.
     - Merge it in master branch from development branch.
 - Note: Don’t push directly in master.
 
-## I used
+## I used the following
 - Laravel 9.19
-- Notification
-- Queue
-- Task Scheduling
 - JWT Authentication
-## How to Setup and RUN
+- Laravel Notification
+- Laravel Queue
+- Taravel Task Scheduling
+# How to Setup
 1. Pull the repository form 
 https://github.com/ahsan-ullah/Larave-Test.git
+or
+Run the command 
+> git clone https://github.com/ahsan-ullah/Larave-Test.git
 
 ## Run the folloing command
-> composer update
-
 > cp .env.example .env
-
 - Create a database by laravel_test
 - Update .env file database name to laravel_test
+> composer update
 
 > php artisan key:generate
 
@@ -53,7 +54,8 @@ Postman Collection Link:
 https://www.getpostman.com/collections/c69ac03e69ca2dd85fcc
 
 ## Postman Collection Documentaiont
-Postman Collection Link:
+Postman Collection Documentaiont Link:
+[Postmean Collection Documentaiont](https://documenter.getpostman.com/view/1952071/UzJPLv1A)
 https://documenter.getpostman.com/view/1952071/UzJPLv1A
 ## Dependencies
 - PHP 8 or hire
