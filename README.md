@@ -39,7 +39,7 @@ https://github.com/ahsan-ullah/Larave-Test.git
 > cp .env.example .env
 - Create a database by laravel_test
 - Update .env file database name to laravel_test
-> composer update
+> composer install
 
 > php artisan key:generate
 
