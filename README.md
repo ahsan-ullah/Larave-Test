@@ -41,7 +41,7 @@ https://github.com/ahsan-ullah/Larave-Test.git
 - Update .env file database name to laravel_test
 > composer install
 - or
-> composer install
+> composer update
 
 > php artisan key:generate
 
